@@ -4,87 +4,91 @@ jobs:
   upload_tool_cache:
     runs-on: ubuntu-20.04
     # container: ows-docker-dev.docker.artifactory.viasat.com/base/gha:20230519a
-    # strategy:
-    #   matrix:
-    #     node: [8.17.0, 10.24.0, 12.22.0, 14.21.0, 16.19.0, 18.13.0]
-    #     python: [2.7.18, 3.6.15, 3.7.16, 3.8.16, 3.9.16, 3.10.11, 3.11.3]
-    #     golang: [1.18.10, 1.19.9, 1.20.4]
+    strategy:
+      matrix:
+        node: ['16', '18', '20']
+        python: ['2.7', '3.6', '3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
+        golang: ['1.18', '1.19', '1.20', '1.21']
     #     dotnet: [3.1.426, 6.0.408]
-    env:
-      DOTNET_INSTALL_DIR: './.dotnet'
+    # env:
+    #   DOTNET_INSTALL_DIR: './.dotnet'
     steps:
       - name: Clear any existing tool cache
         run: |
           mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
           mkdir -p "${{ runner.tool_cache }}"
-      - name: Setup Dotnet 6.0
-        uses: actions/setup-dotnet@v3
+      # - name: Setup Dotnet 6.0
+      #   uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version: '6.0.x'
+      # - name: Setup Dotnet 3.1
+      #   uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version: '3.1.x'
+      - name: Setup Node 
+        uses: actions/setup-node@v4
         with:
-          dotnet-version: '6.0.x'
-      - name: Setup Dotnet 3.1
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '3.1.x'
-      - name: Setup Node 10
-        uses: actions/setup-node@v3
-        with:
-          node-version: '10'
-      - name: Setup Node 12
-        uses: actions/setup-node@v3
-        with:
-          node-version: '12'
-      - name: Setup Node 14
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - name: Setup Node 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-      - name: Setup Node 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - name: Setup Python 2.7
+          node-version: ${{ matrix.node }}
+      # - name: Setup Node 12
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '12'
+      # - name: Setup Node 14
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '14'
+      # - name: Setup Node 16
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '16'
+      # - name: Setup Node 18
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '18'
+      # - name: Setup Node 20
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '20'
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '2.7'
-      - name: Setup Python 3.6
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.6'
-      - name: Setup Python 3.7
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.7'
-      - name: Setup Python 3.8
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.8'
-      - name: Setup Python 3.9
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-      - name: Setup Python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Setup Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - name: Setup Go 1.18
+          python-version: ${{ matrix.python }}
+      # - name: Setup Python 3.6
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.6'
+      # - name: Setup Python 3.7
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.7'
+      # - name: Setup Python 3.8
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.8'
+      # - name: Setup Python 3.9
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.9'
+      # - name: Setup Python 3.10
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.10'
+      # - name: Setup Python 3.11
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.11'
+      - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.18'
-      - name: Setup Go 1.19
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.19'
-      - name: Setup Go 1.20
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
+          go-version: ${{ matrix.golang }}
+      # - name: Setup Go 1.19
+      #   uses: actions/setup-go@v4
+      #   with:
+      #     go-version: '1.19'
+      # - name: Setup Go 1.20
+      #   uses: actions/setup-go@v4
+      #   with:
+      #     go-version: '1.20'
       - name: Archive tool cache
         run: |
           cd "${{ runner.tool_cache }}"
