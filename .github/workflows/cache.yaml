@@ -2,7 +2,7 @@ name: Create tool
 on: [workflow_dispatch, push]
 jobs:
   upload_tool_cache:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # container: ows-docker-dev.docker.artifactory.viasat.com/base/gha:20230519a
     # strategy:
     #   matrix:
