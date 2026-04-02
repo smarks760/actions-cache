@@ -130,7 +130,7 @@ jobs:
           cd "${{ runner.tool_cache }}"
           tar -czf tool_cache.tar.gz *
       - name: Upload tool cache artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: actions-cached
           path: ${{runner.tool_cache}}/tool_cache.tar.gz
